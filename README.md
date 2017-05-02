@@ -1,11 +1,13 @@
 # Welcome to the LBRY wrapper for Python.
 
-## Here I'm just going to talk about the set up a bit:
-* Make sure pip and python are installed.
-* Install pytest (sudo pip install pytest)
-* Install requests
-
-### Run the tests
-`pytest lbry_python_test.py`
+## Example
+```python
+import lbry
+r = lbry.wallet_balance
+print(r)
+```
 
 ### List of available methods
+:ballot_box_with_check: channel_list_mine
+:ballot_box_with_check: claim_list_mine
+:ballot_box_with_check: wallet_balance
