@@ -2,26 +2,22 @@ import unittest
 import requests
 import lbry
 
-class LbryPythonTests(unittest.TestCase): 
-  
-  base_url = "http://127.0.0.1:5279/lbryapi/"
-  
-  def test_should_make_any_request(self):
-    r = requests.get("http://google.com")
-    self.assertEqual(r.status_code,200)
+class LbryPythonTests(unittest.TestCase):
+    def shallow_check(self, r):
+        self.assertEqual(r.status_code, 200)
+        j = r.json()
+        self.assertIn('result', j)
+        self.assertIn('jsonrpc', j)
+        self.assertIn('id', j)
 
-  def test_should_make_req_to_lbry(self):
-    r = requests.get("http://127.0.0.1:5279/lbryapi")
-    self.assertEqual(r.status_code,200)
+    def test_lbry_method_channel_list_mine(self):
+        r = lbry.channel_list_mine()
+        self.shallow_check(r)
 
-  def test_raw_lbry_method_get(self):
-    url = self.base_url + "get"
-    self.assertEqual(url, "http://127.0.0.1:5279/lbryapi/get")
-  
-  def test_lbry_module_base_url(self):
-    url  = lbry.base_url
-    self.assertEqual(url, self.base_url)
+    def test_lbry_method_claim_list_mine(self):
+        r = lbry.claim_list_mine()
+        self.shallow_check(r)
 
-  def test_lbry_module_get(self):
-    r = lbry.get()
-    self.assertEqual(r.status_code, 200)
+    def test_lbry_method_wallet_balanace(self):
+        r = lbry.wallet_balance()
+        self.shallow_check(r)
