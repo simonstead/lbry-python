@@ -3,8 +3,12 @@
 ## Example
 ```python
 import lbry
-r = lbry.wallet_balance
+r = lbry.wallet_balance()
 print(r)
+```
+
+## Example response
+```
 ```
 
 ### List of available methods

@@ -12,12 +12,12 @@ class LbryPythonTests(unittest.TestCase):
 
     def test_lbry_method_channel_list_mine(self):
         r = lbry.channel_list_mine()
-        self.shallow_check(r)
+        assert isinstance(r, list)
 
     def test_lbry_method_claim_list_mine(self):
         r = lbry.claim_list_mine()
-        self.shallow_check(r)
+        assert isinstance(r, list)
 
     def test_lbry_method_wallet_balanace(self):
         r = lbry.wallet_balance()
-        self.shallow_check(r)
+        assert r >= 0

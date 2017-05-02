@@ -3,12 +3,17 @@ import json
 
 base_url = "http://127.0.0.1:5279/lbryapi/"
 
+
 def _request(method_name, body={}):
     payload = { "method": method_name }
     if body != {}:
         payload.body = body
     r = requests.post(base_url, data=json.dumps(payload))
-    return r
+    j = r.json()
+    if 'result' in j:
+        return j['result']
+    else:
+        return r
 
 def channel_list_mine():
     method_name = "channel_list_mine"
