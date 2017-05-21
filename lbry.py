@@ -206,6 +206,8 @@ def claim_show():
 #  Returns:
 #      (list) list of available commands
 def daemon_stop():
+    method_name = "daemon_stop"
+    return _request(method_name)
 #  Stop lbrynet-daemon
 #  Returns:
 #      (string) Shutdown message
@@ -411,7 +413,7 @@ def publish():
 #          'fee' : (float) fee paid for the claim transaction
 #          'claim_id' : (str) claim ID of the resulting claim
 # }
-def refect():
+def reflect():
 #  Reflect a stream
 #  Args:
 #      'sd_hash': (str) sd_hash of lbry file
@@ -516,6 +518,8 @@ def send_amount_to_address():
 #  Returns:
 #      (bool) true if payment successfully scheduled
 def settings_get():
+    method_name = "settings_get"
+    return _request(method_name)
 #  Get daemon settings
 #  Returns:
 #      (dict) Dictionary of daemon settings
@@ -554,6 +558,8 @@ def stream_cost_estimate():
 # resolveable
 #      blob
 def transaction_list():
+    method_name = "transaction_list"
+    return _request(method_name)
 #  List transactions belonging to wallet
 # Args: None
 #  Returns:
@@ -565,6 +571,8 @@ def transaction_list():
 #  Returns:
 #      (dict) JSON formatted transaction
 def version():
+    method_name = "version"
+    return _request(method_name)
 #  Get lbry version information
 # Args: None
 #  Returns:
@@ -597,6 +605,8 @@ def wallet_is_address_mine():
 #  Returns:
 #      (bool) true, if address is associated with current wallet
 def wallet_list():
+    method_name = "wallet_list"
+    return _request(method_name)
 #  List wallet addresses
 # Args: None
 #  Returns:
