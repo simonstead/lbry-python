@@ -229,10 +229,9 @@ def descriptor_get(sd_hash, **opt_params):
 #                                       only-free
 #  Returns
 #      (str) Success/Fail message or (dict) decoded data
-def file_delete(name, **opt_params):
+def file_delete(**opt_params):
     method_name = "file_delete"
-    body = { name }
-    return _request(method_name, body, opt_params)
+    return _request(method_name, {}, opt_params)
 #  Delete a lbry file
 #  Args:
 #      'name' (optional): (str) delete file by lbry name,
@@ -569,9 +568,9 @@ def settings_get():
 #      See ADJUSTABLE_SETTINGS in lbrynet/conf.py for full list of settin
 #         t
 # gs
-def settings_set(run_on_startup, data_rate, max_key_fee, download_directory, max_upload, max_download, download_timeout, search_timeout, cache_time):
+def settings_set(data_rate, max_key_fee, download_directory, download_timeout, search_timeout, cache_time):
     method_name = "settings_set"
-    body = { run_on_startup, data_rate, max_key_fee, download_directory, max_upload, max_download, download_timeout, search_timeout, cache_time }
+    body = { data_rate, max_key_fee, download_directory, download_timeout, search_timeout, cache_time }
     return _request(method_name, body)
 #  Set daemon settings
 #  Args:
