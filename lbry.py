@@ -11,9 +11,8 @@ def _request(method_name, body={}, **opt_params):
     r = requests.post(base_url, data=json.dumps(payload))
     if r.status_code != 200:
         print "Bad Status Code"
-        print r.status_code
+        print r
     j = r.json()
-    print j
     if 'result' in j:
         return j['result']
     else:
