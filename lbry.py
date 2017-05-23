@@ -4,12 +4,16 @@ import json
 base_url = "http://127.0.0.1:5279/lbryapi/"
 
 
-def _request(method_name, body={}):
+def _request(method_name, body={}, **opt_params):
     payload = { "method": method_name }
     if body != {}:
-        payload.params = body
+        payload["params"] = body
     r = requests.post(base_url, data=json.dumps(payload))
+    if r.status_code != 200:
+        print "Bad Status Code"
+        print r.status_code
     j = r.json()
+    print j
     if 'result' in j:
         return j['result']
     else:
@@ -29,13 +33,17 @@ def wallet_balance():
 # Args: None
 #  Returns:
 #      (str) Success/fail message
-def blob_delete():
+def blob_delete(blob_hash):
+    method_name = "blob_delete"
+    return _request(method_name, { "blob_hash": blob_hash })
 # Delete a blob
 #  Args:
 #      'blob_hash': (str) hash of blob to get
 #  Returns:
 #      (str) Success/fail message
-def blob_get():
+def blob_get(blob_hash, **opt_params):
+    method_name = "blob_get"
+    return _request(method_name, { "blob_hash": blob_hash }, **opt_params)
 #  Download and return a blob
 #  Args:
 #      'blob_hash': (str) blob hash of blob to get
@@ -52,7 +60,9 @@ def blob_get():
 # r g
 #    Returns
 #      (str) Success/Fail message or (dict) decoded data
-def blob_list():
+def blob_list(**opt_params):
+    method_name = "blob_get"
+    return _request(method_name, { }, **opt_params)
 #  Returns blob hashes. If not given filters, returns all blobs known by
 #  Args:
 #      'uri' (optional): (str) filter by blobs in stream for winning clai
@@ -69,7 +79,9 @@ def blob_list():
 # Args: None
 #  Returns:
 #      (bool) true if successful
-def block_show():
+def block_show(blockhash):
+    method_name = "block_show"
+    return _request(method_name, { "blockhash": blockhash })
 #  Get contents of a block
 #  Args:
 #      'blockhash': (str) hash of the block to look up
@@ -82,7 +94,9 @@ def block_show():
 #  Get my channels
 #  Returns:
 #      (list) ClaimDict
-def channel_new():
+def channel_new(channel_name, amount):
+    method_name = "channel_new"
+    return _request(method_name, { "channel_name": channel_name, "amount": amount })
 #  Generate a publisher key and create a new certificate claim
 #  Args:
 #      'channel_name': (str) '@' prefixed name
@@ -96,7 +110,9 @@ def channel_new():
 #          'fee' : (float) fee paid for the claim transaction
 #          'claim_id' : (str) claim ID of the resulting claim
 # }
-def claim_abandon():
+def claim_abandon(claim_id):
+    method_name = "claim_abandon"
+    return _request(method_name, { "claim_id": claim_id })
 #  Abandon a name and reclaim credits from the claim
 #  Args:
 #      'claim_id': (str) claim_id of claim
@@ -106,7 +122,9 @@ def claim_abandon():
 #          txid : (str) txid of resulting transaction
 #          fee : (float) fee paid for the transaction
 #      }
-def claim_list():
+def claim_list(name):
+    method_name = "claim_list"
+    return _request(method_name, { "name": name })
 #
 #    Get claims for a name
 #  Args:
@@ -167,7 +185,7 @@ def claim_list_mine():
 # }, ]
 def claim_new_support(name, claim_id, amount):
     method_name = "claim_new_support"
-    body = { name, claim_id, amount }
+    body = { "name": name, "claim_id": claim_id, "amount": amount }
     return _request(method_name, body)
 #  Support a name claim
 #  Args:
@@ -183,8 +201,8 @@ def claim_new_support(name, claim_id, amount):
 # }
 def claim_show(name, **opt_params):
     method_name = "claim_show"
-    body = { name }
-    return _request(method_name, body, opt_params)
+    body = { "name": name }
+    return _request(method_name, body, **opt_params)
 #  Resolve claim info from a LBRY name
 #  Args:
 #      'name': (str) name to look up, do not include lbry:// prefix
@@ -218,8 +236,8 @@ def daemon_stop():
 #      (string) Shutdown message
 def descriptor_get(sd_hash, **opt_params):
     method_name = "descriptor_get"
-    body = { sd_hash }
-    return _request(method_name, body, opt_params)
+    body = { "sd_hash": sd_hash }
+    return _request(method_name, body, **opt_params)
 #  Download and return a sd blob
 #  Args:
 #      'sd_hash': (str) hash of sd blob
@@ -231,7 +249,7 @@ def descriptor_get(sd_hash, **opt_params):
 #      (str) Success/Fail message or (dict) decoded data
 def file_delete(**opt_params):
     method_name = "file_delete"
-    return _request(method_name, {}, opt_params)
+    return _request(method_name, {}, **opt_params)
 #  Delete a lbry file
 #  Args:
 #      'name' (optional): (str) delete file by lbry name,
@@ -252,7 +270,7 @@ def file_delete(**opt_params):
 #      (bool) true if deletion was successful
 def file_list(**opt_params):
     method_name = "file_list"
-    return _request(method_name, {}, opt_params)
+    return _request(method_name, {}, **opt_params)
 #  List files limited by optional filters
 #  Args:
 #      'name' (optional): (str) filter files by lbry name,
@@ -300,8 +318,8 @@ def file_list(**opt_params):
 # }, ]
 def file_set_status(status, **opt_params):
     method_name = "file_set_status"
-    body = { status }
-    return _request(method_name, body, opt_params)
+    body = { "status": status }
+    return _request(method_name, body, **opt_params)
 #  Start or stop downloading a file
 #  Args:
 #      'status': (str) "start" or "stop"
@@ -312,8 +330,8 @@ def file_set_status(status, **opt_params):
 #      (str) Confirmation message
 def get(uri, **opt_params):
     method_name = "get"
-    body = { uri }
-    return _request(method_name, body, opt_params)
+    body = { "uri": uri }
+    return _request(method_name, body, **opt_params)
 #  Download stream from a LBRY name.
 #  Args:
 #      'uri': (str) lbry uri to download
@@ -350,8 +368,8 @@ def get(uri, **opt_params):
 #      }
 def get_availability(uri, **opt_params):
     method_name = "get_availability"
-    body = { uri }
-    return _request(method_name, body, opt_params)
+    body = { "uri": uri }
+    return _request(method_name, body, **opt_params)
 #  Get stream availability for lbry uri
 #  Args:
 #      'uri' : (str) lbry uri
@@ -368,8 +386,8 @@ def get_availability(uri, **opt_params):
 #      otherwise returns general help message
 def peer_list(blob_hash, **opt_params):
     method_name = "peer_list"
-    body = { blob_hash }
-    return _request(method_name, body, opt_params)
+    body = { "blob_hash": blob_hash }
+    return _request(method_name, body, **opt_params)
 #  Get peers for blob hash
 #  Args:
 #      'blob_hash': (str) blob hash
@@ -379,8 +397,8 @@ def peer_list(blob_hash, **opt_params):
 #        s false
 def publish(name, bid, **opt_params):
     method_name = "publish"
-    body = { name, bid }
-    return _request(method_name, body, opt_params)
+    body = { "name": name, "bid": bid }
+    return _request(method_name, body, **opt_params)
 #  Make a new name claim and publish associated data to lbrynet,
 #  update over existing claim if user already has a claim for name.
 #  Fields required in the final Metadata are:
@@ -442,8 +460,8 @@ def publish(name, bid, **opt_params):
 # }
 def reflect(sd_hash, **opt_params):
     method_name = "reflect"
-    body = { sd_hash }
-    return _request(method_name, body, opt_params)
+    body = { "sd_hash": sd_hash }
+    return _request(method_name, body, **opt_params)
 #  Reflect a stream
 #  Args:
 #      'sd_hash': (str) sd_hash of lbry file
@@ -451,7 +469,7 @@ def reflect(sd_hash, **opt_params):
 #      (bool) true if successful
 def report_bug(message):
     method_name = "report_bug"
-    body = { message }
+    body = { "message": message }
     return _request(method_name, body)
 #  Report a bug to slack
 #  Args:
@@ -460,7 +478,7 @@ def report_bug(message):
 #      (bool) true if successful
 def resolve(uri):
     method_name = "resolve"
-    body = { uri }
+    body = { "uri": uri }
     return _request(method_name, body)
 #  Resolve a LBRY URI
 #  Args:
@@ -541,7 +559,7 @@ def resolve(uri):
 # } }
 def resolve_name(name):
     method_name = "resolve_name"
-    body = { name }
+    body = { "name": name }
     return _request(method_name, body)
 #  Resolve stream info from a LBRY name
 #  Args:
@@ -551,7 +569,7 @@ def resolve_name(name):
 # resolvable
 def send_amount_to_address(amount, address):
     method_name = "send_amount_to_address"
-    body = { amount, address }
+    body = { "amount": amount, "address": address }
     return _request(method_name, body)
 #  Send credits to an address
 #  Args:
@@ -570,7 +588,7 @@ def settings_get():
 # gs
 def settings_set(data_rate, max_key_fee, download_directory, download_timeout, search_timeout, cache_time):
     method_name = "settings_set"
-    body = { data_rate, max_key_fee, download_directory, download_timeout, search_timeout, cache_time }
+    body = { "data_rate": data_rate, "max_key_fee": max_key_fee, "download_directory": download_directory, "download_timeout": download_timeout, "search_timeout": search_timeout, "cache_time": cache_time }
     return _request(method_name, body)
 #  Set daemon settings
 #  Args:
@@ -594,8 +612,8 @@ def settings_set(data_rate, max_key_fee, download_directory, download_timeout, s
 #      (dict) Daemon status dictionary
 def stream_cost_estimate(name, **opt_params):
     method_name = "stream_cost_estimate"
-    body = { name }
-    return _request(method_name, body, opt_params)
+    body = { "name": name }
+    return _request(method_name, body, **opt_params)
 #  Get estimated cost for a lbry stream
 #  Args:
 #      'name': (str) lbry name
@@ -640,7 +658,7 @@ def version():
 #
 def wallet_balance(**opt_params):
     method_name = "wallet_balance"
-    return _request(method_name, {}, opt_params)
+    return _request(method_name, {}, **opt_params)
 #  Return the balance of the wallet
 #  Args:
 #      'address' (optional): If address is provided only that balance wil
@@ -650,7 +668,7 @@ def wallet_balance(**opt_params):
 #      (float) amount of lbry credits in wallet
 def wallet_is_address_mine(address):
     method_name = "wallet_is_address_mine"
-    body = { address }
+    body = { "address": address }
     return _request(method_name, body)
 #  Checks if an address is associated with the current wallet.
 #  Args:

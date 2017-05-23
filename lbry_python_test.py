@@ -3,39 +3,33 @@ import requests
 import lbry
 
 class LbryPythonTests(unittest.TestCase):
-    def shallow_check(self, r):
-        self.assertEqual(r.status_code, 200)
-        j = r.json()
-        self.assertIn('result', j)
-        self.assertIn('jsonrpc', j)
-        self.assertIn('id', j)
-
     def test_lbry_channel_list_mine(self):
         r = lbry.channel_list_mine()
         assert isinstance(r, list)
+
     def test_lbry_method_claim_list_mine(self):
         r = lbry.claim_list_mine()
         assert isinstance(r, list)
 
-    def test_lbry_method_wallet_balance(self):
-        r = lbry.wallet_balance()
-        assert r >= 0
-
+    @unittest.skip("Test skip")
     def test_lbry_method_blob_delete(self):
+        blob_hash = "TEST_BLOB_HASH"
         r = lbry.blob_delete(blob_hash)
         print r
         assert r
 
+    @unittest.skip("Test skip")
     def test_lbry_method_blob_get(self):
         r = lbry.blob_get(blob_hash)
         print r
-        assert r = 0
+        assert r == 0
 
     def test_lbry_method_blob_list(self):
         r = lbry.blob_list()
         assert r > 0
 
     def test_lbry_method_block_show(self):
+        blockhash = "5487da044e5bb671d10e4329a7026a9bc27c1196c8ab5ce5ab4fb864686f61ed"
         r = lbry.block_show(blockhash)
         assert r > 0
 
@@ -43,24 +37,27 @@ class LbryPythonTests(unittest.TestCase):
         r = lbry.channel_list_mine()
         assert isinstance(r, list)
 
+    @unittest.skip("Test skip")
     def test_lbry_method_channel_new(self):
         channel_name = "CHANNEL_TEST_NAME"
         amount = 0.0
         r = lbry.channel_new(channel_name, amount)
         assert r
 
+    @unittest.skip("Test skip")
     def test_lbry_method_claim_abandon(self):
         r = lbry.claim_abandon(claim_id)
         assert r
 
     def test_lbry_method_claim_list(self):
-        r = lbry.claim_list(name)
-        assert r
+        r = lbry.claim_list("princess-bubblegum")
+        self.assertIn('claims', r)
 
     def test_lbry_method_claim_list_mine(self):
         r = lbry.claim_list_mine()
         assert isinstance(r, list)
 
+    @unittest.skip("Test skip")
     def test_lbry_method_claim_new_support(self):
         name = "princess-bubblegum"
         claim_id = "claim_id"
@@ -73,80 +70,98 @@ class LbryPythonTests(unittest.TestCase):
         r = lbry.claim_show(name)
         assert r
 
+    def test_lbry_method_claim_show_opt(self):
+        name = "princess-bubblegum"
+        opt_params = { "txid": "4479d2913ecf706b46181e9ff139ed486fef400b01b85b11d642b76be547e6d8", "nout": 0 }
+        r = lbry.claim_show(name, **opt_params)
+        print r
+        assert r
+
+    @unittest.skip("Test skip")
     def test_lbry_method_daemon_stop(self):
         r = lbry.daemon_stop()
-        shallow_check(r)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_descriptor_get(self):
         sd_hash = "sd_hash"
         r = lbry.descriptor_get(sd_hash)
 
+    @unittest.skip("Test skip")
     def test_lbry_method_file_delete(self):
-        params = { name: "princess-bubblegum" }
+        params = { "name": "princess-bubblegum" }
         r = lbry.file_delete(params)
-        shallow_check(r)
+        assert r > 0
 
     def test_lbry_method_file_list(self):
-        params = { name: "princess-bubblegum" }
-        r = lbry.file_list(params)
-        shallow_check(r)
+        opt_params = { "name": "princess-bubblegum" }
+        r = lbry.file_list(**opt_params)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_file_set_status(self):
         status = "stop"
-        optionals = { name: "princess-bubblegum" }
+        optionals = { "name": "princess-bubblegum" }
         r = lbry.file_set_status(status, optionals)
-        shallow_check(r)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_get(self):
         uri = "princess-bubblegum"
         r = lbry.get(uri)
-        shallow_check(r)
+        assert r > 0
 
     def test_lbry_method_get_availability(self):
         uri = "princess-bubblegum"
         r = lbry.get_availability(uri)
-        shallow_check(r)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_peer_list(self):
-        r = lbry.peer_list()
-        shallow_check(r)
+        blob_hash = "blob_hash"
+        r = lbry.peer_list(blob_hash)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_publish(self):
         name = "princess-bubblegum"
         bid = 0
         r = lbry.publish(name, bid)
-        shallow_check(r)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_reflect(self):
         sd_hash = "sd_hash"
         r = lbry.reflect(sd_hash)
-        shallow_check(r)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_report_bug(self):
         message = "Hi there, I'm testing out the LBRY API Wrapper for python. Have a great day."
         r = lbry.report_bug(message)
-        shallow_check(r)
+        assert r > 0
 
     def test_lbry_method_resolve(self):
         uri = "princess-bubblegum"
         r = lbry.resolve(uri)
-        shallow_check(r)
+        self.assertIn("claim", r)
 
     def test_lbry_method_resolve_name(self):
         name = "princess-bubblegum"
         r = lbry.resolve_name(name)
-        shallow_check(r)
+        assert r > 0
 
     def test_lbry_method_send_amount_to_address(self):
         amount = 0
         address = "TEST_LBRY_ADDRESS"
         r = lbry.send_amount_to_address(amount, address)
-        shallow_check(r)
+        assert r > 0
 
     def test_lbry_method_settings_get(self):
         r = lbry.settings_get()
-        shallow_check(r)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_settings_set(self):
         data_rate = 0.0
         max_key_fee = 0.0
@@ -155,20 +170,20 @@ class LbryPythonTests(unittest.TestCase):
         search_timeout = 600
         cache_time = 600
         r = settings_set(data_rate, max_key_fee, download_directory, download_timeout, search_timeout, cache_time)
-        shallow_check(r)
+        assert r > 0
 
     def test_lbry_method_stream_cost_estimate(self):
         name = "princess-bubblegum"
         r = lbry.stream_cost_estimate(name)
-        shallow_check(r)
+        assert r > 0
 
     def test_lbry_method_transaction_list(self):
         r = lbry.transaction_list()
-        shallow_check(r)
+        assert isinstance(r, list)
 
     def test_lbry_method_version(self):
         r = lbry.version()
-        shallow_check(r)
+        self.assertIn("lbryum_version", r)
 
     def test_lbry_method_wallet_balance(self):
         r = lbry.wallet_balance()
@@ -177,24 +192,22 @@ class LbryPythonTests(unittest.TestCase):
     def test_lbry_method_wallet_is_address_mine(self):
         wallet_address = "MY_WALLET_ADDRESS"
         r = lbry.wallet_is_address_mine(wallet_address)
-        assert r === True
-        shallow_check(r)
+        assert r == False
 
     def test_lbry_method_wallet_list(self):
         r = lbry.wallet_list()
-        shallow_check(r)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_wallet_new_address(self):
         r = lbry.wallet_new_address()
-        assert isinstance(r, string)
-        shallow_check(r)
+        assert isinstance(r, list)
 
     def test_lbry_method_wallet_public_key(self):
         r = lbry.wallet_public_key()
-        assert isinstance(r, string)
-        shallow_check(r)
+        assert r > 0
 
+    @unittest.skip("Test skip")
     def test_lbry_method_wallet_unused_address(self):
         r = lbry.wallet_unused_address()
-        assert isinstance(r, string)
-        shallow_check(r)
+        assert isinstance(r, list)
