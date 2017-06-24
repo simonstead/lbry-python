@@ -7,8 +7,8 @@ setup(
     description = 'A client wrapper for the LBRY API, using requests module',
     author = 'Simon Stead',
     author_email = 'simonstead@me.com',
-    url = '',
-    download_url = 'download link you saved',
+    url = 'https://github.com/simonstead/lbry-python',
+    download_url = 'save://github.com/simonstead/lbry-python/archive/v1.0.0.tar.gz',
     keywords = ['lbry', 'crypto'],
     classifiers = [],
 )
