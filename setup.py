@@ -8,7 +8,7 @@ setup(
     author = 'Simon Stead',
     author_email = 'simonstead@me.com',
     url = 'https://github.com/simonstead/lbry-python',
-    download_url = 'https://github.com/simonstead/lbry-python/archive/v1.0.0.tar.gz',
+    download_url = 'https://github.com/simonstead/lbry-python/archive/v1.0.1.tar.gz',
     keywords = ['lbry', 'crypto'],
     classifiers = [],
 )
