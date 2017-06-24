@@ -87,7 +87,7 @@ def blob_list(**opt_params):
 #     None
 # Returns:
 #     (bool) true if successful
-def blob_refect_all:
+def blob_refect_all():
     return _request("blob_refect_all")
 
 

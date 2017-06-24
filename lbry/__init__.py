@@ -1,1 +1,1 @@
-import .lbry
+from .lbry import *
