@@ -795,6 +795,3 @@ def wallet_public_key():
 def wallet_unused_address():
     method_name = "wallet_unused_address"
     return _request(method_name)
-
-
-print(version())
