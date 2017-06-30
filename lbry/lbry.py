@@ -6,6 +6,8 @@ base_url = "http://127.0.0.1:5279/lbryapi/"
 
 def _request(method_name, body={}, **opt_params):
     payload = { "method": method_name }
+    for key, value in opt_params.iteritems():
+        body[key] = value
     if body != {}:
         payload["params"] = body
     r = requests.post(base_url, data=json.dumps(payload))
@@ -793,3 +795,6 @@ def wallet_public_key():
 def wallet_unused_address():
     method_name = "wallet_unused_address"
     return _request(method_name)
+
+
+print(version())

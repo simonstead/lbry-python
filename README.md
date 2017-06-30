@@ -57,8 +57,7 @@ print(r)
 
 ## Example with optional parameters
 ```python
-opt_params = { "address": "<address>" }
-r = lbry.wallet_balance(**opt_params)
+r = lbry.wallet_balance(address=<address>)
 print r
 ```
 
